@@ -1,0 +1,46 @@
+{
+	"name": "pokedex",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
+		"lint": "prettier --plugin-search-dir . --check . && eslint .",
+		"format": "prettier --plugin-search-dir . --write ."
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^1.0.0-next.90",
+		"@sveltejs/kit": "^1.0.0-next.587",
+		"@types/lokijs": "^1.5.7",
+		"autoprefixer": "^10.4.13",
+		"eslint": "^8.28.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-svelte3": "^4.0.0",
+		"fake-indexeddb": "^4.0.1",
+		"postcss": "^8.4.20",
+		"prettier": "^2.8.0",
+		"prettier-plugin-svelte": "^2.8.1",
+		"svelte": "^3.54.0",
+		"svelte-check": "^2.9.2",
+		"tailwindcss": "^3.2.4",
+		"typescript": "^4.9.3",
+		"vite": "^4.0.0"
+	},
+	"type": "module",
+	"dependencies": {
+		"@supabase/supabase-js": "^2.2.3",
+		"bson": "^4.7.2",
+		"daisyui": "^2.46.1",
+		"date-picker-svelte": "^2.2.5",
+		"graphql": "^16.6.0",
+		"graphql-request": "^5.1.0",
+		"lokijs": "^1.5.12",
+		"pouchdb-adapter-idb": "^8.0.0",
+		"rxdb": "^13.17.1",
+		"rxjs": "^7.8.0",
+		"svelte-modals": "^1.2.1"
+	}
+}
