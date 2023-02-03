@@ -9,10 +9,12 @@
 
 	export let data;
 	let heroes = data.heroes;
-	let rxHeroes = data.rxHeroes;
-	let offline = data.offline;
+	$: rxHeroes = data.rxHeroes;
+	$: offline = data.offline;
 	// console.log(rxHeroes)
-	$:{console.log(offline)}
+	$: {
+		console.log(offline);
+	}
 	$: isUpdate = false;
 	$: contact = {
 		id: '',
@@ -43,9 +45,9 @@
 
 <main>
 	{#if offline}
-	<div class="bg-red-200 text-center p-3">Offline</div>
+		<div class="bg-red-200 text-center p-3">Offline</div>
 	{/if}
-	
+
 	<div class="flex flex-col justify-center items-center ">
 		<div class="text-4xl mb-10 mt-4">Heroes</div>
 		<form
