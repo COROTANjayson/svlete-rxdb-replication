@@ -8,22 +8,22 @@
 	// import { replicationState } from '$lib/rxdb/replicationState';
 
 	export let data;
-	let heroes = data.heroes;
+	$: heroes = data.heroes;
 	$: rxHeroes = data.rxHeroes;
 	$: offline = data.offline;
 	// console.log(rxHeroes)
-	$: {
-		console.log(offline);
-	}
+	// $: {
+	// 	console.log(offline);
+	// }
 	$: isUpdate = false;
 	$: contact = {
 		id: '',
 		name: '',
 		color: ''
 	};
-	$: {
-		console.log(contact);
-	}
+	// $: {
+	// 	console.log(contact);
+	// }
 	// $: {
 	// 	if (!data.heroes) heroes = data.heroes;
 	// }
@@ -126,6 +126,7 @@
 					<div class="basis-1/2">ID</div>
 					<div class="basis-1/4">Color</div>
 					<div class="basis-1/4">Hero Name</div>
+					<div class="basis-1/4">Update</div>
 				</div>
 				{#each rxHeroes as hero}
 					<div class="w-full flex flex-row justify-center items-center p-3">

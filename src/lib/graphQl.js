@@ -30,32 +30,38 @@ export const heroesQuery = async () => {
 	// }
 };
 
-export const createHeroes = async (
-	/** @type {FormDataEntryValue} */ name,
-	/** @type {FormDataEntryValue} */ color
-) => {
+// @ts-ignore
+export const createHeroes = async (payload) => {
+	const { id, name, color, updatedAt, deleted } = payload;
 	try {
 		const client = useClient();
 		const CREATE_HERO = gql`
-			mutation CreateHero($heroInput: HeroInput) {
-				createHero(heroInput: $heroInput) {
+			mutation CreateHero(
+				$id: String!
+				$name: String!
+				$color: String!
+				$updatedAt: Int!
+				$deleted: Int
+			) {
+				createHero(id: $id, name: $name, color: $color, updatedAt: $updatedAt, deleted: $deleted) {
 					name
 					color
 				}
 			}
 		`;
 		const variables = {
-			heroInput: {
-				color: color,
-				name: name
-			}
+			id,
+			color,
+			name,
+			updatedAt,
+			deleted
 		};
 		await client.request(CREATE_HERO, variables);
 		return {
 			error: false
 		};
 	} catch (error) {
-		console.log('action errorr');
+		console.log('action errorr', error);
 		return {
 			error: true
 		};
@@ -69,8 +75,11 @@ export const updateHeroes = async (
 	try {
 		const client = useClient();
 		const UPDATE_HERO = gql`
-			mutation Mutation($id: ID!, $heroInput: HeroInput) {
-				editHero(ID: $id, heroInput: $heroInput)
+			mutation Mutation($id: String!, $heroInput: HeroInput) {
+				updateHero(id: $id, heroInput: $heroInput) {
+					name
+					color
+				}
 			}
 		`;
 		const variables = {
@@ -78,8 +87,8 @@ export const updateHeroes = async (
 			heroInput: {
 				color: data.color,
 				name: data.name,
-				updatedAt: Date.now(),
-				deleted: false
+				updatedAt: Math.floor(Date.now() / 1000),
+				deleted: 0
 			}
 		};
 		await client.request(UPDATE_HERO, variables);
@@ -87,7 +96,7 @@ export const updateHeroes = async (
 			error: false
 		};
 	} catch (error) {
-		console.log('action errorr');
+		console.log('action errorr', error);
 		return {
 			error: true
 		};

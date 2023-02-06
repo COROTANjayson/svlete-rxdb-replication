@@ -1,7 +1,6 @@
 // @ts-ignore
-export const pushQueryBuilder = pushRow => {
-  // console.log('heloo push',pushRow)
-  const query = `
+export const pushQueryBuilder = (pushRow) => {
+	const query = `
   mutation PushHero($row: [HeroInputPushRow]) {
     pushHero(row: $row) {
       id
@@ -12,11 +11,11 @@ export const pushQueryBuilder = pushRow => {
     }
   }
   `;
-  const variables = {
-    row: pushRow
-  };
-  return {
-      query:query,
-      variables:variables
-  };
+	const variables = {
+		row: pushRow
+	};
+	return {
+		query: query,
+		variables: variables
+	};
 };

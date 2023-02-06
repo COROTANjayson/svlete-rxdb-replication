@@ -11,7 +11,7 @@ import { GraphQLReplicator } from '$lib/rxdb/graphQlReplicator';
 import { pullQueryBuilder } from '$lib/rxdb/pullQueryBuilder';
 import { pushQueryBuilder } from '$lib/rxdb/pushQueryBuilder';
 import { pullStreamQueryBuilder } from '$lib/rxdb/pullStreamQueryBuilder';
-import { createHeroes, heroesQuery } from '$lib/graphQl';
+import { createHeroes, heroesQuery, updateHeroes } from '$lib/graphQl';
 
 // add plugins
 addRxPlugin(RxDBUpdatePlugin);
@@ -49,7 +49,6 @@ export async function load({ params }) {
 
 	// ---GRAPHQL SERVER QUERY---
 	const heroes = await heroesQuery();
-	console.log('heroes', heroes);
 	graphQuery = [...heroes.query];
 	if (heroes.error) {
 		offline = true;
@@ -88,12 +87,19 @@ export const actions = {
 
 		const { name, color } = formProps;
 
+		const payload = {
+			id: Math.random().toString(36).substr(2, 9),
+			name: name,
+			color: color,
+			updatedAt: Math.floor(Date.now() / 1000),
+			deleted: 0
+		};
+
 		// Create hero through graphql server
-		const heroes = await createHeroes(name, color);
+		const heroes = await createHeroes(payload);
 
 		// Create hero through rxdb if server is down
 		if (heroes.error) {
-			console.log('error, rxdbsave');
 			const id = new ObjectID();
 			await db.heroes.insert({
 				id: id.toString(),
@@ -108,7 +114,6 @@ export const actions = {
 		const formProps = Object.fromEntries(data);
 		const id = url.searchParams.get('id');
 		const { name, color } = formProps;
-		console.log(name, color, typeof id);
 
 		const error = false;
 		const hero = {
@@ -117,18 +122,18 @@ export const actions = {
 		};
 
 		// Update hero through graphql server
-		// const updateHero = await updateHeroes(hero, id)
+		const updateHero = await updateHeroes(hero, id);
 
 		// replicationState.reSync();
 
 		// Update hero through rxdb if server is down
-		// if (heroes.error) {
-		await db.heroes.upsert({
-			id: id,
-			name: name,
-			color: color,
-			updatedAt: Date.now()
-		});
-		// }
+		if (updateHero.error) {
+			await db.heroes.upsert({
+				id: id,
+				name: name,
+				color: color,
+				updatedAt: Date.now()
+			});
+		}
 	}
 };
